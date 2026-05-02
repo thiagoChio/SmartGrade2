@@ -1,50 +1,56 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import styles from './styles';
 import { colors } from '../styles/colors';
 
 export default function ProgressCard() {
-  return (
-    <View style={styles.card}>
-      <Text style={styles.title}>IA analisando seu envio...</Text>
-      <Text style={styles.percent}>68%</Text>
+  const progress = 68;
 
-      <View style={styles.barBackground}>
-        <View style={styles.barFill} />
+  return (
+    <View style={styles.progressCard}>
+      {/* Cabeçalho */}
+      <View style={styles.progressHeader}>
+        <View style={styles.progressIconBox}>
+          <Text style={styles.progressIcon}></Text>
+        </View>
+
+        <View style={styles.progressTextBox}>
+          <Text style={styles.progressTitle}>IA analisando seu envio...</Text>
+          <Text style={styles.progressSubtitle}>
+            Analisando estrutura e argumentos centrais
+          </Text>
+        </View>
+
+        <Text style={styles.progressPercent}>{progress}%</Text>
+      </View>
+
+      {/* Barra de progresso */}
+      <View style={styles.progressBarBackground}>
+        <LinearGradient
+          colors={[colors.blue, colors.purple]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={[styles.progressBarFill, { width: `${progress}%` }]}
+        />
+      </View>
+
+      {/* Etapas */}
+      <View style={styles.steps}>
+        <View style={[styles.step, styles.stepActive]}>
+          <View style={[styles.dot, styles.dotActive]} />
+          <Text style={styles.stepTextActive}>Verificando Citações</Text>
+        </View>
+
+        <View style={[styles.step, styles.stepActive]}>
+          <View style={[styles.dot, styles.dotActive]} />
+          <Text style={styles.stepTextActive}>Avaliando Fluxo</Text>
+        </View>
+
+        <View style={[styles.step, styles.stepInactive]}>
+          <View style={[styles.dot, styles.dotInactive]} />
+          <Text style={styles.stepTextInactive}>Checagem de Plágio</Text>
+        </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.surface,
-    padding: 20,
-    borderRadius: 20,
-    marginBottom: 18,
-    shadowColor: '#0F172A',
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 8 },
-    shadowRadius: 18,
-    elevation: 2,
-  },
-  title: {
-    fontWeight: '600',
-    marginBottom: 8,
-    color: colors.textPrimary,
-  },
-  percent: {
-    color: colors.primary,
-    fontWeight: '700',
-    marginBottom: 10,
-  },
-  barBackground: {
-    height: 8,
-    backgroundColor: colors.border,
-    borderRadius: 10,
-  },
-  barFill: {
-    width: '68%',
-    height: 8,
-    backgroundColor: colors.primary,
-    borderRadius: 10,
-  },
-});

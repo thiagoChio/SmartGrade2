@@ -1,30 +1,27 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
+import { LinearGradient } from 'expo-linear-gradient';
+import styles from './styles'; 
+import { colors } from '../styles/colors';
 
 export default function UploadCard() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function pickFile() {
-    console.log('Botão clicado');
-
     const result = await DocumentPicker.getDocumentAsync({
-      type: '*/*',
+      type: ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
       copyToCacheDirectory: true,
     });
 
-    if (result.canceled) {
-      console.log('Usuário cancelou');
-      return;
-    }
+    if (result.canceled) return;
 
     const file = result.assets[0];
     setFileName(file.name);
     setLoading(true);
 
     const formData = new FormData();
-
     formData.append('file', {
       uri: file.uri,
       name: file.name,
@@ -40,12 +37,9 @@ export default function UploadCard() {
         },
       });
 
-      const data = await response.json();
-
-      console.log('Resposta do servidor:', data);
+      await response.json();
       Alert.alert('Sucesso', 'Arquivo enviado!');
     } catch (error) {
-      console.log('Erro no upload:', error);
       Alert.alert('Erro', 'Falha ao enviar arquivo');
     } finally {
       setLoading(false);
@@ -53,62 +47,42 @@ export default function UploadCard() {
   }
 
   return (
-    <View style={styles.card}>
-      <Text style={styles.cardTitle}>Arraste e solte o arquivo</Text>
+    <View style={styles.uploadCard}>
+      {/* Ícone */}
+      <View style={styles.uploadIconCircle}>
+        <Text style={styles.uploadIcon}>☁️</Text>
+      </View>
 
-      <Text style={styles.cardText}>
-        Clique para selecionar PDF ou DOCX
+      {/* Título e subtítulo */}
+      <Text style={styles.uploadTitle}>Envie seu arquivo</Text>
+      <Text style={styles.uploadSubtitle}>
+        Selecione um arquivo PDF ou DOCX para análise da IA
       </Text>
 
-      {fileName && <Text style={styles.fileName}>📄 {fileName}</Text>}
+      {/* Arquivo selecionado */}
+      {fileName && (
+        <View style={styles.formatBox}>
+          <Text style={styles.formatText}>📄 {fileName}</Text>
+        </View>
+      )}
 
+      {/* Botão principal */}
       <TouchableOpacity
-        style={[styles.button, loading && styles.buttonDisabled]}
+        style={styles.uploadButton}
         onPress={pickFile}
         disabled={loading}
       >
-        <Text style={styles.buttonText}>
-          {loading ? 'Enviando...' : 'Selecionar Arquivo'}
-        </Text>
+        <LinearGradient
+          colors={[colors.blue, colors.purple]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.gradient}
+        >
+          <Text style={styles.uploadButtonText}>
+            {loading ? 'Enviando...' : 'Selecionar Arquivo'}
+          </Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
-    padding: 24,
-    borderRadius: 24,
-    marginBottom: 18,
-    alignItems: 'center',
-  },
-  cardTitle: {
-    fontWeight: '700',
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  cardText: {
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  fileName: {
-    marginBottom: 12,
-    color: '#4F46E5',
-    fontWeight: '600',
-  },
-  button: {
-    backgroundColor: '#5B4BDB',
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 12,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '700',
-  },
-});

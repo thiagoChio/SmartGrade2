@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,13 +9,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@expo/vector-icons": "^15.1.1",
     "expo": "~55.0.8",
     "expo-document-picker": "~55.0.13",
-=======
-    "expo": "~55.0.8",
->>>>>>> 1512d902f483d455b2bb664609bf1e592755cd70
+    "expo-linear-gradient": "~55.0.13",
     "expo-status-bar": "~55.0.4",
     "react": "19.2.0",
     "react-native": "0.83.2"

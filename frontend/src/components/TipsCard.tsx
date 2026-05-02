@@ -1,13 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../styles/colors';
 
 export default function TipsCard() {
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>Dicas da IA</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.icon}></Text>
+        <Text style={styles.header}>Dicas da IA</Text>
+      </View>
 
       <Text style={styles.text}>
-        Certifique-se de revisar seu trabalho antes de enviar.
+        Certifique-se de que seu <Text style={styles.bold}>Resumo</Text> esteja na primeira página. Nosso assistente de correção por IA funciona melhor quando a bibliografia está claramente marcada ao final do documento.
       </Text>
     </View>
   );
@@ -15,22 +17,37 @@ export default function TipsCard() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.surface,
+    backgroundColor: '#F3F4F6', // azul-claro do Figma
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 16,
     marginBottom: 30,
-    shadowColor: '#0F172A',
-    shadowOpacity: 0.06,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 14,
-    elevation: 2,
   },
-  title: {
-    color: colors.primary,
-    fontWeight: '700',
+
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
+
+  icon: {
+    fontSize: 18,
+    color: '#305CB1', // azul principal
+    marginRight: 6,
+  },
+
+  header: {
+    color: '#305CB1',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+
   text: {
-    color: colors.textSecondary,
+    color: '#374151', // cinza escuro para texto
+    fontSize: 14,
+    lineHeight: 20,
+  },
+
+  bold: {
+    fontWeight: '700',
   },
 });
